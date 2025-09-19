@@ -1,0 +1,25 @@
+{
+  "build": {
+    "env": {
+      "POSTGRES_URL": "@vercel-postgres-url",
+      "BLOB_READ_WRITE_TOKEN": "@vercel-blob-token"
+    }
+  },
+  "env": {
+    "POSTGRES_URL": "@vercel-postgres-url",
+    "POSTGRES_PRISMA_URL": "@vercel-postgres-prisma-url",
+    "POSTGRES_URL_NON_POOLING": "@vercel-postgres-non-pooling-url",
+    "POSTGRES_USER": "@vercel-postgres-user",
+    "POSTGRES_HOST": "@vercel-postgres-host",
+    "POSTGRES_PASSWORD": "@vercel-postgres-password",
+    "POSTGRES_DATABASE": "@vercel-postgres-database",
+    "BLOB_READ_WRITE_TOKEN": "@vercel-blob-token",
+    "JWT_SECRET": "@jwt-secret"
+  },
+  "functions": {
+    "src/app/api/**": {
+      "maxDuration": 30
+    }
+  },
+  "crons": []
+}
