@@ -83,7 +83,7 @@ export const RSVPSection: React.FC = () => {
                 Thank You!
               </h2>
               <p className="text-lg text-sage-600 mb-6">
-                Your RSVP has been received successfully. We're so excited to celebrate with you!
+                Your RSVP has been received successfully. We&apos;re so excited to celebrate with you!
               </p>
               <p className="text-sm text-sage-500">
                 You should receive a confirmation email shortly with all the wedding details.
@@ -109,7 +109,7 @@ export const RSVPSection: React.FC = () => {
             RSVP & Wishes
           </h2>
           <p className="text-xl text-sage-600 max-w-2xl mx-auto leading-relaxed">
-            Please let us know if you'll be joining us and share your warm wishes for our special day.
+            Please let us know if you&apos;ll be joining us and share your warm wishes for our special day.
           </p>
         </motion.div>
 
@@ -155,8 +155,8 @@ export const RSVPSection: React.FC = () => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-champagne-500 focus:border-transparent transition-all duration-200"
                   >
                     <option value="">Please select</option>
-                    <option value="yes">Yes, I'll be there! 🎉</option>
-                    <option value="no">Sorry, can't make it 😢</option>
+                    <option value="yes">Yes, I&apos;ll be there! 🎉</option>
+                    <option value="no">Sorry, can&apos;t make it 😢</option>
                     <option value="maybe">Not sure yet 🤔</option>
                   </select>
                 </div>

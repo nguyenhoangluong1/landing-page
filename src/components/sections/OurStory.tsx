@@ -71,7 +71,7 @@ export const OurStory: React.FC<OurStoryProps> = ({
             Our Story
           </h2>
           <p className="text-xl text-sage-600 max-w-2xl mx-auto leading-relaxed">
-            Every love story is beautiful, but ours is our favorite. Here's how our journey began and led us to this magical moment.
+            Every love story is beautiful, but ours is our favorite. Here&apos;s how our journey began and led us to this magical moment.
           </p>
         </motion.div>
 
@@ -165,7 +165,7 @@ export const OurStory: React.FC<OurStoryProps> = ({
           className="text-center mt-16"
         >
           <p className="font-serif text-2xl sm:text-3xl text-sage-700 mb-8">
-            And now, we're ready to write the next chapter...
+            And now, we&apos;re ready to write the next chapter...
           </p>
           <div className="w-24 h-px bg-champagne-400 mx-auto"></div>
         </motion.div>

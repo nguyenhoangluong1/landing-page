@@ -63,8 +63,8 @@ export const GiftRegistry: React.FC = () => {
             Gift Registry
           </h2>
           <p className="text-xl text-sage-600 max-w-2xl mx-auto leading-relaxed">
-            Your presence is the greatest gift, but if you'd like to celebrate with us in another way, 
-            we've made it easy with these digital options.
+            Your presence is the greatest gift, but if you&apos;d like to celebrate with us in another way, 
+            we&apos;ve made it easy with these digital options.
           </p>
         </motion.div>
 
@@ -78,10 +78,10 @@ export const GiftRegistry: React.FC = () => {
             className="bg-sage-50 rounded-lg p-8 mb-12 text-center"
           >
             <h3 className="font-serif text-2xl text-sage-800 mb-4">
-              "The greatest gifts are those lavished on us by people who care enough to give you their time, attention, and love."
+              &ldquo;The greatest gifts are those lavished on us by people who care enough to give you their time, attention, and love.&rdquo;
             </h3>
             <p className="text-sage-600">
-              We're so grateful to have you in our lives. Your love and support mean everything to us!
+              We&apos;re so grateful to have you in our lives. Your love and support mean everything to us!
             </p>
           </motion.div>
 
@@ -158,7 +158,7 @@ export const GiftRegistry: React.FC = () => {
               Traditional Registry
             </h3>
             <p className="text-sage-600 mb-6">
-              We're also registered at a few of our favorite stores for those who prefer traditional gifting.
+              We&apos;re also registered at a few of our favorite stores for those who prefer traditional gifting.
             </p>
             
             <div className="flex flex-wrap justify-center gap-4">

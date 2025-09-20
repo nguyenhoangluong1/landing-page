@@ -189,7 +189,7 @@ export const WeddingDetails: React.FC<WeddingDetailsProps> = ({
             <h3 className="font-serif text-2xl text-sage-800 mb-2">Dress Code</h3>
             <p className="text-lg text-sage-600">{dressCode}</p>
             <p className="text-sm text-sage-500 mt-2">
-              We can't wait to celebrate with you in style!
+              We can&apos;t wait to celebrate with you in style!
             </p>
           </motion.div>
 
