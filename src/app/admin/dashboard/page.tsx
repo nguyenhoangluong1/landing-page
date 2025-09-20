@@ -278,7 +278,18 @@ const ContentEditorTab: React.FC = () => {
           if (!sections[item.section]) {
             sections[item.section] = {}
           }
-          sections[item.section][item.content_key] = JSON.parse(item.content_value)
+          // Handle content_value - it might be a string or already parsed JSON
+          let contentValue = item.content_value
+          try {
+            // Try to parse as JSON if it's a string
+            if (typeof contentValue === 'string') {
+              contentValue = JSON.parse(contentValue)
+            }
+          } catch (e) {
+            // If parsing fails, use the original string value
+            contentValue = item.content_value
+          }
+          sections[item.section][item.content_key] = contentValue
         })
         setContentData(sections)
       }
