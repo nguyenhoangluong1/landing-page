@@ -576,16 +576,125 @@ const ContentEditorTab: React.FC = () => {
 
 // Media Gallery Tab
 const MediaGalleryTab: React.FC = () => {
+  const [images, setImages] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+  const [uploading, setUploading] = useState(false)
+
+  useEffect(() => {
+    fetchImages()
+  }, [])
+
+  const fetchImages = async () => {
+    setLoading(true)
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch('/api/media', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      if (response.ok) {
+        const data = await response.json()
+        setImages(data.data || [])
+      }
+    } catch (error) {
+      console.error('Failed to fetch images:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    setUploading(true)
+    try {
+      const formData = new FormData()
+      formData.append('image', file)
+      formData.append('category', 'gallery')
+
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch('/api/media', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      })
+
+      if (response.ok) {
+        fetchImages() // Refresh the list
+      }
+    } catch (error) {
+      console.error('Failed to upload image:', error)
+    } finally {
+      setUploading(false)
+    }
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <h1 className="font-serif text-3xl text-black mb-8">Media Gallery</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="font-serif text-3xl text-black">Media Gallery</h1>
+        <label className="cursor-pointer">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="hidden"
+            disabled={uploading}
+          />
+          <Button variant="luxury" disabled={uploading}>
+            <Upload size={16} className="mr-2" />
+            {uploading ? 'Uploading...' : 'Upload Image'}
+          </Button>
+        </label>
+      </div>
+
       <div className="bg-white rounded-lg p-6 shadow-luxury">
-        <p className="text-gray-800">Media management functionality will be implemented here.</p>
-        <p className="text-sm text-gray-500 mt-2">Upload, edit, and organize photos and videos with drag-and-drop functionality.</p>
+        {loading ? (
+          <div className="flex justify-center p-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-champagne-500"></div>
+          </div>
+        ) : images.length === 0 ? (
+          <div className="text-center py-12">
+            <ImageIcon className="mx-auto h-16 w-16 text-gray-400 mb-4" />
+            <p className="text-gray-800 text-lg">No images uploaded yet</p>
+            <p className="text-sm text-gray-500 mt-2">Upload your first wedding photo to get started</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {images.map((image) => (
+              <div key={image.id} className="relative group">
+                <img
+                  src={image.url}
+                  alt={image.alt_text || 'Wedding photo'}
+                  className="w-full h-32 object-cover rounded-lg shadow-md"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 rounded-lg flex items-center justify-center">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity"
+                    onClick={() => {
+                      // Implement delete functionality
+                      if (confirm('Delete this image?')) {
+                        // Delete image logic here
+                      }
+                    }}
+                  >
+                    <Trash2 size={14} />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </motion.div>
   )
