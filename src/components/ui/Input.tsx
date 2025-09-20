@@ -12,14 +12,14 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="space-y-2">
         {label && (
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-black">
             {label}
           </label>
         )}
         <input
           ref={ref}
           className={cn(
-            'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-champagne-500 focus:border-transparent transition-all duration-200',
+            'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-champagne-500 focus:border-transparent transition-all duration-200 text-black placeholder-gray-500',
             error && 'border-red-500 focus:ring-red-500',
             className
           )}
@@ -49,14 +49,14 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="space-y-2">
         {label && (
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-black">
             {label}
           </label>
         )}
         <textarea
           ref={ref}
           className={cn(
-            'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-champagne-500 focus:border-transparent transition-all duration-200 resize-y',
+            'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-champagne-500 focus:border-transparent transition-all duration-200 resize-y text-black placeholder-gray-500',
             error && 'border-red-500 focus:ring-red-500',
             className
           )}

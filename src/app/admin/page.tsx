@@ -62,8 +62,8 @@ export default function AdminLogin() {
       >
         <div className="bg-white rounded-lg shadow-luxury p-8">
           <div className="text-center mb-8">
-            <h1 className="font-serif text-3xl text-sage-800 mb-2">Admin Login</h1>
-            <p className="text-sage-600">Sign in to manage your wedding website</p>
+            <h1 className="font-serif text-3xl text-black mb-2">Admin Login</h1>
+            <p className="text-gray-800">Sign in to manage your wedding website</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -103,7 +103,7 @@ export default function AdminLogin() {
             </Button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-sage-500">
+          <div className="mt-6 text-center text-sm text-gray-800">
             <p>Default credentials:</p>
             <p>Email: admin@wedding.com</p>
             <p>Password: admin123</p>

@@ -13,10 +13,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     
     const variants = {
       default: 'bg-gray-900 text-white hover:bg-gray-800 focus:ring-gray-500',
-      outline: 'border-2 border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500',
-      ghost: 'text-gray-700 hover:bg-gray-100 focus:ring-gray-500',
+      outline: 'border-2 border-gray-300 text-black hover:bg-gray-50 focus:ring-gray-500',
+      ghost: 'text-black hover:bg-gray-100 focus:ring-gray-500',
       luxury: 'bg-gradient-to-r from-champagne-400 to-champagne-500 text-white hover:from-champagne-500 hover:to-champagne-600 hover:shadow-luxury transform hover:scale-105 focus:ring-champagne-500',
-      'outline-luxury': 'border-2 border-champagne-400 text-champagne-600 hover:bg-champagne-400 hover:text-white hover:shadow-luxury focus:ring-champagne-500'
+      'outline-luxury': 'border-2 border-champagne-400 text-black hover:bg-champagne-400 hover:text-white hover:shadow-luxury focus:ring-champagne-500'
     }
 
     const sizes = {

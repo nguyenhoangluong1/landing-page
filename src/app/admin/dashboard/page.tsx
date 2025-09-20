@@ -97,8 +97,8 @@ export default function AdminDashboard() {
       {/* Sidebar */}
       <div className="w-64 bg-white shadow-lg">
         <div className="p-6 border-b border-gray-200">
-          <h2 className="font-serif text-2xl text-sage-800">Wedding Admin</h2>
-          <p className="text-sm text-gray-600 mt-1">Welcome, {user?.email}</p>
+          <h2 className="font-serif text-2xl text-black">Wedding Admin</h2>
+          <p className="text-sm text-gray-800 mt-1">Welcome, {user?.email}</p>
         </div>
 
         <nav className="mt-6">
@@ -110,8 +110,8 @@ export default function AdminDashboard() {
                 onClick={() => setActiveTab(item.id)}
                 className={`w-full flex items-center space-x-3 px-6 py-3 text-left transition-colors ${
                   activeTab === item.id
-                    ? 'bg-champagne-50 text-champagne-700 border-r-2 border-champagne-500'
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? 'bg-champagne-50 text-black border-r-2 border-champagne-500'
+                    : 'text-black hover:bg-gray-50'
                 }`}
               >
                 <Icon size={20} />
@@ -203,7 +203,7 @@ const OverviewTab: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <h1 className="font-serif text-3xl text-sage-800 mb-8">Dashboard Overview</h1>
+      <h1 className="font-serif text-3xl text-black mb-8">Dashboard Overview</h1>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {stats.map((stat, index) => {
@@ -218,8 +218,8 @@ const OverviewTab: React.FC = () => {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">{stat.label}</p>
-                  <p className="text-2xl font-bold text-sage-800">{stat.value}</p>
+                  <p className="text-sm text-gray-800">{stat.label}</p>
+                  <p className="text-2xl font-bold text-black">{stat.value}</p>
                 </div>
                 <Icon className="text-champagne-500" size={24} />
               </div>
@@ -229,7 +229,7 @@ const OverviewTab: React.FC = () => {
       </div>
 
       <div className="bg-white rounded-lg p-6 shadow-luxury">
-        <h2 className="text-xl font-semibold text-sage-800 mb-4">Quick Actions</h2>
+        <h2 className="text-xl font-semibold text-black mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <Button variant="luxury" className="justify-start">
             <Upload size={16} className="mr-2" />
@@ -353,7 +353,7 @@ const ContentEditorTab: React.FC = () => {
       transition={{ duration: 0.6 }}
     >
       <div className="flex items-center justify-between mb-8">
-        <h1 className="font-serif text-3xl text-sage-800">Content Editor</h1>
+        <h1 className="font-serif text-3xl text-black">Content Editor</h1>
         {message && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded">
             {message}
@@ -364,10 +364,10 @@ const ContentEditorTab: React.FC = () => {
       <div className="space-y-8">
         {/* Hero Section */}
         <div className="bg-white rounded-lg p-6 shadow-luxury">
-          <h2 className="text-xl font-semibold text-sage-800 mb-4">Hero Section</h2>
+          <h2 className="text-xl font-semibold text-black mb-4">Hero Section</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Bride Name</label>
+              <label className="block text-sm font-medium text-black mb-2">Bride Name</label>
               <input
                 type="text"
                 value={contentData.hero?.couple_names?.bride || ''}
@@ -379,11 +379,11 @@ const ContentEditorTab: React.FC = () => {
                   handleContentChange('hero', 'couple_names', newValue)
                 }}
                 onBlur={() => saveContent('hero', 'couple_names', contentData.hero?.couple_names)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500 text-black"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Groom Name</label>
+              <label className="block text-sm font-medium text-black mb-2">Groom Name</label>
               <input
                 type="text"
                 value={contentData.hero?.couple_names?.groom || ''}
@@ -395,11 +395,11 @@ const ContentEditorTab: React.FC = () => {
                   handleContentChange('hero', 'couple_names', newValue)
                 }}
                 onBlur={() => saveContent('hero', 'couple_names', contentData.hero?.couple_names)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500 text-black"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Wedding Date</label>
+              <label className="block text-sm font-medium text-black mb-2">Wedding Date</label>
               <input
                 type="date"
                 value={contentData.hero?.wedding_date?.date || ''}
@@ -416,11 +416,11 @@ const ContentEditorTab: React.FC = () => {
                   handleContentChange('hero', 'wedding_date', newValue)
                 }}
                 onBlur={() => saveContent('hero', 'wedding_date', contentData.hero?.wedding_date)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500 text-black"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Hero Title</label>
+                            <label className="block text-sm font-medium text-black mb-2">Hero Title</label>
               <input
                 type="text"
                 value={contentData.hero?.hero_text?.title || ''}
@@ -432,11 +432,11 @@ const ContentEditorTab: React.FC = () => {
                   handleContentChange('hero', 'hero_text', newValue)
                 }}
                 onBlur={() => saveContent('hero', 'hero_text', contentData.hero?.hero_text)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500 text-black"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Hero Subtitle</label>
+              <label className="block text-sm font-medium text-black mb-2">Hero Subtitle</label>
               <textarea
                 value={contentData.hero?.hero_text?.subtitle || ''}
                 onChange={(e) => {
@@ -448,7 +448,7 @@ const ContentEditorTab: React.FC = () => {
                 }}
                 onBlur={() => saveContent('hero', 'hero_text', contentData.hero?.hero_text)}
                 rows={2}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500 text-black"
               />
             </div>
           </div>
@@ -456,14 +456,14 @@ const ContentEditorTab: React.FC = () => {
 
         {/* Venue Section */}
         <div className="bg-white rounded-lg p-6 shadow-luxury">
-          <h2 className="text-xl font-semibold text-sage-800 mb-4">Venue Details</h2>
+          <h2 className="text-xl font-semibold text-black mb-4">Venue Details</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Ceremony */}
             <div>
               <h3 className="text-lg font-medium text-gray-900 mb-3">Ceremony</h3>
               <div className="space-y-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Venue Name</label>
+                  <label className="block text-sm font-medium text-black mb-1">Venue Name</label>
                   <input
                     type="text"
                     value={contentData.venue?.ceremony?.name || ''}
@@ -475,11 +475,11 @@ const ContentEditorTab: React.FC = () => {
                       handleContentChange('venue', 'ceremony', newValue)
                     }}
                     onBlur={() => saveContent('venue', 'ceremony', contentData.venue?.ceremony)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500 text-black"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                  <label className="block text-sm font-medium text-black mb-1">Address</label>
                   <textarea
                     value={contentData.venue?.ceremony?.address || ''}
                     onChange={(e) => {
@@ -491,11 +491,11 @@ const ContentEditorTab: React.FC = () => {
                     }}
                     onBlur={() => saveContent('venue', 'ceremony', contentData.venue?.ceremony)}
                     rows={2}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500 text-black"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Time</label>
+                  <label className="block text-sm font-medium text-black mb-1">Time</label>
                   <input
                     type="time"
                     value={contentData.venue?.ceremony?.time || ''}
@@ -507,7 +507,7 @@ const ContentEditorTab: React.FC = () => {
                       handleContentChange('venue', 'ceremony', newValue)
                     }}
                     onBlur={() => saveContent('venue', 'ceremony', contentData.venue?.ceremony)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500 text-black"
                   />
                 </div>
               </div>
@@ -518,7 +518,7 @@ const ContentEditorTab: React.FC = () => {
               <h3 className="text-lg font-medium text-gray-900 mb-3">Reception</h3>
               <div className="space-y-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Venue Name</label>
+                  <label className="block text-sm font-medium text-black mb-1">Venue Name</label>
                   <input
                     type="text"
                     value={contentData.venue?.reception?.name || ''}
@@ -530,11 +530,11 @@ const ContentEditorTab: React.FC = () => {
                       handleContentChange('venue', 'reception', newValue)
                     }}
                     onBlur={() => saveContent('venue', 'reception', contentData.venue?.reception)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500 text-black"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                  <label className="block text-sm font-medium text-black mb-1">Address</label>
                   <textarea
                     value={contentData.venue?.reception?.address || ''}
                     onChange={(e) => {
@@ -546,11 +546,11 @@ const ContentEditorTab: React.FC = () => {
                     }}
                     onBlur={() => saveContent('venue', 'reception', contentData.venue?.reception)}
                     rows={2}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500 text-black"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Time</label>
+                  <label className="block text-sm font-medium text-black mb-1">Time</label>
                   <input
                     type="time"
                     value={contentData.venue?.reception?.time || ''}
@@ -562,7 +562,7 @@ const ContentEditorTab: React.FC = () => {
                       handleContentChange('venue', 'reception', newValue)
                     }}
                     onBlur={() => saveContent('venue', 'reception', contentData.venue?.reception)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500 text-black"
                   />
                 </div>
               </div>
@@ -582,9 +582,9 @@ const MediaGalleryTab: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <h1 className="font-serif text-3xl text-sage-800 mb-8">Media Gallery</h1>
+      <h1 className="font-serif text-3xl text-black mb-8">Media Gallery</h1>
       <div className="bg-white rounded-lg p-6 shadow-luxury">
-        <p className="text-gray-600">Media management functionality will be implemented here.</p>
+        <p className="text-gray-800">Media management functionality will be implemented here.</p>
         <p className="text-sm text-gray-500 mt-2">Upload, edit, and organize photos and videos with drag-and-drop functionality.</p>
       </div>
     </motion.div>
@@ -698,7 +698,7 @@ const StoryTab: React.FC = () => {
       transition={{ duration: 0.6 }}
     >
       <div className="flex items-center justify-between mb-8">
-        <h1 className="font-serif text-3xl text-sage-800">Our Story Editor</h1>
+        <h1 className="font-serif text-3xl text-black">Our Story Editor</h1>
         <Button 
           variant="luxury" 
           onClick={() => {
@@ -727,13 +727,13 @@ const StoryTab: React.FC = () => {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center space-x-4 mb-3">
-                    <h3 className="text-lg font-semibold text-sage-800">{milestone.title}</h3>
-                    <span className="text-sm text-champagne-600 bg-champagne-50 px-2 py-1 rounded">
+                    <h3 className="text-lg font-semibold text-black">{milestone.title}</h3>
+                    <span className="text-sm text-black bg-champagne-50 px-2 py-1 rounded">
                       {new Date(milestone.date).toLocaleDateString()}
                     </span>
                     <span className="text-xs text-gray-500">Order: {milestone.sort_order}</span>
                   </div>
-                  <p className="text-gray-600 mb-3">{milestone.description}</p>
+                  <p className="text-gray-800 mb-3">{milestone.description}</p>
                   {milestone.image_url && (
                     <img 
                       src={milestone.image_url} 
@@ -776,53 +776,53 @@ const StoryTab: React.FC = () => {
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+            <label className="block text-sm font-medium text-black mb-2">Title</label>
             <input
               type="text"
               value={formData.title}
               onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500 text-black"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+            <label className="block text-sm font-medium text-black mb-2">Description</label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
               rows={3}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500 text-black"
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
+              <label className="block text-sm font-medium text-black mb-2">Date</label>
               <input
                 type="date"
                 value={formData.date}
                 onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500 text-black"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Sort Order</label>
+              <label className="block text-sm font-medium text-black mb-2">Sort Order</label>
               <input
                 type="number"
                 value={formData.sort_order}
                 onChange={(e) => setFormData(prev => ({ ...prev, sort_order: parseInt(e.target.value) }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500 text-black"
               />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Image URL (optional)</label>
+            <label className="block text-sm font-medium text-black mb-2">Image URL (optional)</label>
             <input
               type="url"
               value={formData.image_url}
               onChange={(e) => setFormData(prev => ({ ...prev, image_url: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500 text-black"
             />
           </div>
           <div className="flex space-x-4 justify-end pt-4">
@@ -851,9 +851,9 @@ const DetailsTab: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <h1 className="font-serif text-3xl text-sage-800 mb-8">Wedding Details</h1>
+      <h1 className="font-serif text-3xl text-black mb-8">Wedding Details</h1>
       <div className="bg-white rounded-lg p-6 shadow-luxury">
-        <p className="text-gray-600">Wedding details editor functionality will be implemented here.</p>
+        <p className="text-gray-800">Wedding details editor functionality will be implemented here.</p>
         <p className="text-sm text-gray-500 mt-2">Update ceremony and reception details, timeline, and dress code.</p>
       </div>
     </motion.div>
@@ -868,9 +868,9 @@ const SettingsTab: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <h1 className="font-serif text-3xl text-sage-800 mb-8">Settings</h1>
+      <h1 className="font-serif text-3xl text-black mb-8">Settings</h1>
       <div className="bg-white rounded-lg p-6 shadow-luxury">
-        <p className="text-gray-600">Settings functionality will be implemented here.</p>
+        <p className="text-gray-800">Settings functionality will be implemented here.</p>
         <p className="text-sm text-gray-500 mt-2">Manage admin users, site preferences, and backup settings.</p>
       </div>
     </motion.div>
