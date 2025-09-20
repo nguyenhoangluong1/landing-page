@@ -251,16 +251,313 @@ const OverviewTab: React.FC = () => {
 
 // Content Editor Tab
 const ContentEditorTab: React.FC = () => {
+  const [contentData, setContentData] = useState<any>({})
+  const [loading, setLoading] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [message, setMessage] = useState('')
+
+  useEffect(() => {
+    fetchContent()
+  }, [])
+
+  const fetchContent = async () => {
+    setLoading(true)
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch('/api/content', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        // Transform data into sections for easier editing
+        const sections: any = {}
+        data.data.forEach((item: any) => {
+          if (!sections[item.section]) {
+            sections[item.section] = {}
+          }
+          sections[item.section][item.content_key] = JSON.parse(item.content_value)
+        })
+        setContentData(sections)
+      }
+    } catch (error) {
+      console.error('Failed to fetch content:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleContentChange = (section: string, key: string, value: any) => {
+    setContentData((prev: any) => ({
+      ...prev,
+      [section]: {
+        ...prev[section],
+        [key]: value
+      }
+    }))
+  }
+
+  const saveContent = async (section: string, key: string, value: any) => {
+    setSaving(true)
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch('/api/content', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          section,
+          content_key: key,
+          content_value: value
+        })
+      })
+
+      if (response.ok) {
+        setMessage('Content saved successfully!')
+        setTimeout(() => setMessage(''), 3000)
+      }
+    } catch (error) {
+      setMessage('Failed to save content')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-champagne-500"></div>
+      </div>
+    )
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <h1 className="font-serif text-3xl text-sage-800 mb-8">Content Editor</h1>
-      <div className="bg-white rounded-lg p-6 shadow-luxury">
-        <p className="text-gray-600">Content editor functionality will be implemented here.</p>
-        <p className="text-sm text-gray-500 mt-2">Edit couple names, wedding date, hero text, and other content dynamically.</p>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="font-serif text-3xl text-sage-800">Content Editor</h1>
+        {message && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded">
+            {message}
+          </div>
+        )}
+      </div>
+
+      <div className="space-y-8">
+        {/* Hero Section */}
+        <div className="bg-white rounded-lg p-6 shadow-luxury">
+          <h2 className="text-xl font-semibold text-sage-800 mb-4">Hero Section</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Bride Name</label>
+              <input
+                type="text"
+                value={contentData.hero?.couple_names?.bride || ''}
+                onChange={(e) => {
+                  const newValue = {
+                    ...contentData.hero?.couple_names,
+                    bride: e.target.value
+                  }
+                  handleContentChange('hero', 'couple_names', newValue)
+                }}
+                onBlur={() => saveContent('hero', 'couple_names', contentData.hero?.couple_names)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Groom Name</label>
+              <input
+                type="text"
+                value={contentData.hero?.couple_names?.groom || ''}
+                onChange={(e) => {
+                  const newValue = {
+                    ...contentData.hero?.couple_names,
+                    groom: e.target.value
+                  }
+                  handleContentChange('hero', 'couple_names', newValue)
+                }}
+                onBlur={() => saveContent('hero', 'couple_names', contentData.hero?.couple_names)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Wedding Date</label>
+              <input
+                type="date"
+                value={contentData.hero?.wedding_date?.date || ''}
+                onChange={(e) => {
+                  const newValue = {
+                    ...contentData.hero?.wedding_date,
+                    date: e.target.value,
+                    display: new Date(e.target.value).toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })
+                  }
+                  handleContentChange('hero', 'wedding_date', newValue)
+                }}
+                onBlur={() => saveContent('hero', 'wedding_date', contentData.hero?.wedding_date)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Hero Title</label>
+              <input
+                type="text"
+                value={contentData.hero?.hero_text?.title || ''}
+                onChange={(e) => {
+                  const newValue = {
+                    ...contentData.hero?.hero_text,
+                    title: e.target.value
+                  }
+                  handleContentChange('hero', 'hero_text', newValue)
+                }}
+                onBlur={() => saveContent('hero', 'hero_text', contentData.hero?.hero_text)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Hero Subtitle</label>
+              <textarea
+                value={contentData.hero?.hero_text?.subtitle || ''}
+                onChange={(e) => {
+                  const newValue = {
+                    ...contentData.hero?.hero_text,
+                    subtitle: e.target.value
+                  }
+                  handleContentChange('hero', 'hero_text', newValue)
+                }}
+                onBlur={() => saveContent('hero', 'hero_text', contentData.hero?.hero_text)}
+                rows={2}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Venue Section */}
+        <div className="bg-white rounded-lg p-6 shadow-luxury">
+          <h2 className="text-xl font-semibold text-sage-800 mb-4">Venue Details</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Ceremony */}
+            <div>
+              <h3 className="text-lg font-medium text-gray-900 mb-3">Ceremony</h3>
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Venue Name</label>
+                  <input
+                    type="text"
+                    value={contentData.venue?.ceremony?.name || ''}
+                    onChange={(e) => {
+                      const newValue = {
+                        ...contentData.venue?.ceremony,
+                        name: e.target.value
+                      }
+                      handleContentChange('venue', 'ceremony', newValue)
+                    }}
+                    onBlur={() => saveContent('venue', 'ceremony', contentData.venue?.ceremony)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                  <textarea
+                    value={contentData.venue?.ceremony?.address || ''}
+                    onChange={(e) => {
+                      const newValue = {
+                        ...contentData.venue?.ceremony,
+                        address: e.target.value
+                      }
+                      handleContentChange('venue', 'ceremony', newValue)
+                    }}
+                    onBlur={() => saveContent('venue', 'ceremony', contentData.venue?.ceremony)}
+                    rows={2}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Time</label>
+                  <input
+                    type="time"
+                    value={contentData.venue?.ceremony?.time || ''}
+                    onChange={(e) => {
+                      const newValue = {
+                        ...contentData.venue?.ceremony,
+                        time: e.target.value
+                      }
+                      handleContentChange('venue', 'ceremony', newValue)
+                    }}
+                    onBlur={() => saveContent('venue', 'ceremony', contentData.venue?.ceremony)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Reception */}
+            <div>
+              <h3 className="text-lg font-medium text-gray-900 mb-3">Reception</h3>
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Venue Name</label>
+                  <input
+                    type="text"
+                    value={contentData.venue?.reception?.name || ''}
+                    onChange={(e) => {
+                      const newValue = {
+                        ...contentData.venue?.reception,
+                        name: e.target.value
+                      }
+                      handleContentChange('venue', 'reception', newValue)
+                    }}
+                    onBlur={() => saveContent('venue', 'reception', contentData.venue?.reception)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                  <textarea
+                    value={contentData.venue?.reception?.address || ''}
+                    onChange={(e) => {
+                      const newValue = {
+                        ...contentData.venue?.reception,
+                        address: e.target.value
+                      }
+                      handleContentChange('venue', 'reception', newValue)
+                    }}
+                    onBlur={() => saveContent('venue', 'reception', contentData.venue?.reception)}
+                    rows={2}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Time</label>
+                  <input
+                    type="time"
+                    value={contentData.venue?.reception?.time || ''}
+                    onChange={(e) => {
+                      const newValue = {
+                        ...contentData.venue?.reception,
+                        time: e.target.value
+                      }
+                      handleContentChange('venue', 'reception', newValue)
+                    }}
+                    onBlur={() => saveContent('venue', 'reception', contentData.venue?.reception)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </motion.div>
   )
@@ -285,17 +582,252 @@ const MediaGalleryTab: React.FC = () => {
 
 // Story Tab
 const StoryTab: React.FC = () => {
+  const [milestones, setMilestones] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+  const [editingMilestone, setEditingMilestone] = useState<any>(null)
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    date: '',
+    image_url: '',
+    sort_order: 0
+  })
+
+  useEffect(() => {
+    fetchMilestones()
+  }, [])
+
+  const fetchMilestones = async () => {
+    setLoading(true)
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch('/api/story', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setMilestones(data.data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch milestones:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const token = localStorage.getItem('adminToken')
+      const method = editingMilestone ? 'PUT' : 'POST'
+      const body = editingMilestone 
+        ? { id: editingMilestone.id, ...formData }
+        : formData
+
+      const response = await fetch('/api/story', {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(body)
+      })
+
+      if (response.ok) {
+        fetchMilestones()
+        setShowAddModal(false)
+        setEditingMilestone(null)
+        setFormData({ title: '', description: '', date: '', image_url: '', sort_order: 0 })
+      }
+    } catch (error) {
+      console.error('Failed to save milestone:', error)
+    }
+  }
+
+  const deleteMilestone = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this milestone?')) return
+
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch(`/api/story?id=${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      if (response.ok) {
+        fetchMilestones()
+      }
+    } catch (error) {
+      console.error('Failed to delete milestone:', error)
+    }
+  }
+
+  const startEdit = (milestone: any) => {
+    setEditingMilestone(milestone)
+    setFormData({
+      title: milestone.title,
+      description: milestone.description,
+      date: milestone.date,
+      image_url: milestone.image_url || '',
+      sort_order: milestone.sort_order
+    })
+    setShowAddModal(true)
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <h1 className="font-serif text-3xl text-sage-800 mb-8">Our Story Editor</h1>
-      <div className="bg-white rounded-lg p-6 shadow-luxury">
-        <p className="text-gray-600">Story milestone editor functionality will be implemented here.</p>
-        <p className="text-sm text-gray-500 mt-2">Add, edit, and reorder story milestones with photos and descriptions.</p>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="font-serif text-3xl text-sage-800">Our Story Editor</h1>
+        <Button 
+          variant="luxury" 
+          onClick={() => {
+            setEditingMilestone(null)
+            setFormData({ title: '', description: '', date: '', image_url: '', sort_order: milestones.length + 1 })
+            setShowAddModal(true)
+          }}
+        >
+          Add Milestone
+        </Button>
       </div>
+
+      {loading ? (
+        <div className="flex items-center justify-center p-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-champagne-500"></div>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {milestones.map((milestone) => (
+            <motion.div
+              key={milestone.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white rounded-lg p-6 shadow-luxury"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center space-x-4 mb-3">
+                    <h3 className="text-lg font-semibold text-sage-800">{milestone.title}</h3>
+                    <span className="text-sm text-champagne-600 bg-champagne-50 px-2 py-1 rounded">
+                      {new Date(milestone.date).toLocaleDateString()}
+                    </span>
+                    <span className="text-xs text-gray-500">Order: {milestone.sort_order}</span>
+                  </div>
+                  <p className="text-gray-600 mb-3">{milestone.description}</p>
+                  {milestone.image_url && (
+                    <img 
+                      src={milestone.image_url} 
+                      alt={milestone.title}
+                      className="w-32 h-20 object-cover rounded"
+                    />
+                  )}
+                </div>
+                <div className="flex space-x-2 ml-4">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => startEdit(milestone)}
+                  >
+                    <Edit size={16} />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => deleteMilestone(milestone.id)}
+                    className="text-red-600 hover:text-red-700"
+                  >
+                    <Trash2 size={16} />
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )}
+
+      {/* Add/Edit Modal */}
+      <Modal
+        isOpen={showAddModal}
+        onClose={() => {
+          setShowAddModal(false)
+          setEditingMilestone(null)
+        }}
+        title={editingMilestone ? 'Edit Milestone' : 'Add New Milestone'}
+      >
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+            <input
+              type="text"
+              value={formData.title}
+              onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+            <textarea
+              value={formData.description}
+              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+              rows={3}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
+              <input
+                type="date"
+                value={formData.date}
+                onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Sort Order</label>
+              <input
+                type="number"
+                value={formData.sort_order}
+                onChange={(e) => setFormData(prev => ({ ...prev, sort_order: parseInt(e.target.value) }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Image URL (optional)</label>
+            <input
+              type="url"
+              value={formData.image_url}
+              onChange={(e) => setFormData(prev => ({ ...prev, image_url: e.target.value }))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-champagne-500"
+            />
+          </div>
+          <div className="flex space-x-4 justify-end pt-4">
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={() => setShowAddModal(false)}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" variant="luxury">
+              {editingMilestone ? 'Update' : 'Add'} Milestone
+            </Button>
+          </div>
+        </form>
+      </Modal>
     </motion.div>
   )
 }

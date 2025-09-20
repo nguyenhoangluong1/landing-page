@@ -1,16 +1,21 @@
 require('dotenv').config({ path: '.env.local' });
 const bcrypt = require('bcryptjs');
-const { sql } = require('@vercel/postgres');
+const { createClient } = require('@vercel/postgres');
 
 async function initializeDatabase() {
+  // Create a client instance
+  const client = createClient({
+    connectionString: process.env.POSTGRES_URL
+  });
+
   try {
-    console.log('Checking connection to database...');
-    console.log('POSTGRES_URL configured:', !!process.env.POSTGRES_URL);
+    console.log('🚀 Starting database initialization...');
+    console.log('Connecting to database...');
     
     console.log('Creating users table...');
     
     // Users table for admin authentication
-    await sql`
+    await client.sql`
       CREATE TABLE IF NOT EXISTS users (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         email VARCHAR(255) UNIQUE NOT NULL,
@@ -25,35 +30,38 @@ async function initializeDatabase() {
     console.log('Checking for existing admin user...');
     
     // Check if admin exists
-    const adminExists = await sql`SELECT id FROM users WHERE email = 'admin@wedding.com'`;
+    const adminExists = await client.sql`SELECT id FROM users WHERE email = 'admin@wedding.com'`;
     
     if (adminExists.rows.length === 0) {
       console.log('Creating new admin user...');
       const hashedPassword = await bcrypt.hash('admin123', 12);
       
-      await sql`
+      await client.sql`
         INSERT INTO users (email, password_hash, role)
         VALUES ('admin@wedding.com', ${hashedPassword}, 'admin')
       `;
       
-      console.log('✅ Admin user created successfully!');
       console.log('');
-      console.log('🎉 LOGIN CREDENTIALS:');
+      console.log('🎉 SUCCESS! Admin user created!');
+      console.log('');
+      console.log('🔐 LOGIN CREDENTIALS:');
       console.log('📧 Email: admin@wedding.com');
       console.log('🔒 Password: admin123');
       console.log('');
+      console.log('✨ You can now login to your admin panel!');
     } else {
+      console.log('');
       console.log('✅ Admin user already exists!');
       console.log('');
-      console.log('🎉 EXISTING LOGIN CREDENTIALS:');
+      console.log('🔐 LOGIN CREDENTIALS:');
       console.log('📧 Email: admin@wedding.com');
       console.log('🔒 Password: admin123');
       console.log('');
     }
 
-    console.log('� Database initialization completed successfully!');
-    console.log('You can now login to your admin panel!');
+    console.log('🎊 Database initialization completed successfully!');
   } catch (error) {
+    console.error('');
     console.error('❌ Database initialization failed:');
     console.error('Error details:', error.message);
     
@@ -65,6 +73,6 @@ async function initializeDatabase() {
   }
 }
 
-console.log('🚀 Starting database initialization...');
+console.log('🚀 Initializing wedding website database...');
 console.log('');
 initializeDatabase();

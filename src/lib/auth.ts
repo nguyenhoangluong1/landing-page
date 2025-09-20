@@ -1,10 +1,23 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
-import { sql } from '@vercel/postgres'
+import { Client } from 'pg'
 import type { User, AdminUser } from '@/types'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
 const JWT_EXPIRES_IN = '7d'
+
+// Create a database connection
+async function createDbConnection() {
+  const client = new Client({
+    connectionString: process.env.POSTGRES_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  });
+  
+  await client.connect();
+  return client;
+}
 
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 12)
@@ -35,12 +48,14 @@ export function verifyToken(token: string): { userId: string; email: string; rol
 }
 
 export async function authenticate(email: string, password: string): Promise<AdminUser | null> {
+  let client;
   try {
-    const result = await sql`
-      SELECT id, email, password_hash, role 
-      FROM users 
-      WHERE email = ${email}
-    `
+    client = await createDbConnection();
+    
+    const result = await client.query(
+      'SELECT id, email, password_hash, role FROM users WHERE email = $1',
+      [email]
+    );
     
     if (result.rows.length === 0) {
       return null
@@ -61,18 +76,23 @@ export async function authenticate(email: string, password: string): Promise<Adm
   } catch (error) {
     console.error('Authentication error:', error)
     return null
+  } finally {
+    if (client) {
+      await client.end();
+    }
   }
 }
 
 export async function createAdminUser(email: string, password: string, role: 'admin' | 'editor' = 'editor'): Promise<AdminUser | null> {
+  let client;
   try {
+    client = await createDbConnection();
     const hashedPassword = await hashPassword(password)
     
-    const result = await sql`
-      INSERT INTO users (email, password_hash, role)
-      VALUES (${email}, ${hashedPassword}, ${role})
-      RETURNING id, email, role
-    `
+    const result = await client.query(
+      'INSERT INTO users (email, password_hash, role) VALUES ($1, $2, $3) RETURNING id, email, role',
+      [email, hashedPassword, role]
+    );
     
     if (result.rows.length === 0) {
       return null
@@ -82,16 +102,22 @@ export async function createAdminUser(email: string, password: string, role: 'ad
   } catch (error) {
     console.error('Create admin user error:', error)
     return null
+  } finally {
+    if (client) {
+      await client.end();
+    }
   }
 }
 
 export async function getUserById(userId: string): Promise<AdminUser | null> {
+  let client;
   try {
-    const result = await sql`
-      SELECT id, email, role 
-      FROM users 
-      WHERE id = ${userId}
-    `
+    client = await createDbConnection();
+    
+    const result = await client.query(
+      'SELECT id, email, role FROM users WHERE id = $1',
+      [userId]
+    );
     
     if (result.rows.length === 0) {
       return null
@@ -101,6 +127,10 @@ export async function getUserById(userId: string): Promise<AdminUser | null> {
   } catch (error) {
     console.error('Get user by ID error:', error)
     return null
+  } finally {
+    if (client) {
+      await client.end();
+    }
   }
 }
 
